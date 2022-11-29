@@ -1,9 +1,9 @@
 import React from "react";
 
 const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
-  const onChangeCheckbox = (e) => {
-    onComplete(list.id, id, e.target.checked);
-  };
+  // const onChangeCheckbox = (e) => {
+  //   onComplete(list.id, id, e.target.checked);
+  // };
 
   return (
     <div key={id} className="tasks__items-row">
