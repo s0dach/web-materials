@@ -82,7 +82,7 @@ const AddList = ({ colors, onAdd }) => {
                 />
               </svg>
             ),
-            name: "Добавить раздел",
+            name: "Добавить раздел.",
           },
         ]}
       />
