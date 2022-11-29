@@ -1,9 +1,35 @@
 import React from "react";
+import { useTelegram } from "../../hooks/useTelegram";
 
 const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
+  const { tg } = useTelegram();
+  tg.MainButton.hide();
+
   const onChangeCheckbox = (e) => {
-    console.log(list.id, id, e.target.checked);
+    // console.log(list.id, id, e.target.checked);
+    console.log(text);
+    tg.MainButton.show();
   };
+
+  const onSendData = React.useCallback(() => {
+    const data = {
+      text,
+    };
+    tg.sendData(JSON.stringify(data));
+  }, [text, tg]);
+
+  React.useEffect(() => {
+    tg.onEvent("mainButtonClicked", onSendData);
+    return () => {
+      tg.offEvent("mainButtonClicked", onSendData);
+    };
+  }, [onSendData, tg]);
+
+  React.useEffect(() => {
+    tg.MainButton.setParams({
+      text: "Отправить",
+    });
+  }, [tg.MainButton]);
 
   return (
     <div key={id} className="tasks__items-row">
