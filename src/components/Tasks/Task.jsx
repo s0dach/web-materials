@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
 const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
-  const onChangeCheckbox = e => {
+  const onChangeCheckbox = (e) => {
     onComplete(list.id, id, e.target.checked);
   };
 
   return (
     <div key={id} className="tasks__items-row">
-      <div className="checkbox">
+      {/* <div className="checkbox">
         <input
           onChange={onChangeCheckbox}
           id={`task-${id}`}
@@ -31,7 +31,8 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
             />
           </svg>
         </label>
-      </div>
+      </div> */}
+      <div>Отправить</div>
       <p>{text}</p>
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
