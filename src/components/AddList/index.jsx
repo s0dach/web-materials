@@ -33,7 +33,7 @@ const AddList = ({ colors, onAdd }) => {
     }
     setIsLoading(true);
     axios
-      .post("http://localhost:3001/lists", {
+      .post("https://narrow-gamy-chef.glitch.me/lists", {
         name: inputValue,
         colorId: seletedColor,
       })

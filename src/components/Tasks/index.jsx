@@ -23,7 +23,7 @@ const Tasks = ({
     if (newTitle) {
       onEditTitle(list.id, newTitle);
       axios
-        .patch("http://localhost:3001/lists/" + list.id, {
+        .patch("https://narrow-gamy-chef.glitch.me/lists/" + list.id, {
           name: newTitle,
         })
         .catch((e) => {
