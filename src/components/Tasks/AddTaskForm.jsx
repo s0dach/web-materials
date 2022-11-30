@@ -21,7 +21,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
     };
     setIsLoading(true);
     axios
-      .post("http://nrow-gamy-chef.glitch.me/colors/tasks", obj)
+      .post("https://nrow-gamy-chef.glitch.me/colors/tasks", obj)
       .then(({ data }) => {
         onAddTask(list.id, data);
         toggleFormVisible();
