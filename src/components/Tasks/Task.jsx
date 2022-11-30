@@ -12,6 +12,7 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
     const data = {
       text,
     };
+    console.log(text);
     tg.sendData(JSON.stringify(data));
   };
   // const onSendData = React.useCallback(() => {
