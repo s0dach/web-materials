@@ -9,7 +9,10 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
     // console.log(list.id, id, e.target.checked);
     // console.log(text);
     tg.MainButton.show();
-    tg.sendData(JSON.stringify(text));
+    const data = {
+      text,
+    };
+    tg.sendData(JSON.stringify(data));
   };
   // const onSendData = React.useCallback(() => {
   //   const data = {
