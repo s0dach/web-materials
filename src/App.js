@@ -77,7 +77,7 @@ function App() {
       });
       setLists(newList);
       axios
-        .delete("https://narrow-gamy-chef.glitch.me/colors/tasks/" + taskId)
+        .delete("https://narrow-gamy-chef.glitch.me/tasks/" + taskId)
         .catch((e) => {
           alert("Не удалось удалить задачу");
           console.log(e);
@@ -99,7 +99,7 @@ function App() {
     });
     setLists(newList);
     axios
-      .patch("https://narrow-gamy-chef.glitch.me/colors/tasks/" + taskId, {
+      .patch("https://narrow-gamy-chef.glitch.me/tasks/" + taskId, {
         completed,
       })
       .catch((e) => {
