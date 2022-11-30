@@ -3,37 +3,49 @@ import { useTelegram } from "../../hooks/useTelegram";
 
 const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
   const { tg } = useTelegram();
-  tg.MainButton.hide();
 
-  const onChangeCheckbox = (e) => {
-    // console.log(list.id, id, e.target.checked);
-    // console.log(text);
-    tg.MainButton.show();
-    const data = {
-      text,
-    };
-    console.log(text);
-    tg.sendData(JSON.stringify(data));
-  };
-  // const onSendData = React.useCallback(() => {
+  // const onChangeCheckbox = (e) => {
+  //   // console.log(list.id, id, e.target.checked);
+  //   // console.log(text);
+  //   tg.MainButton.show();
   //   const data = {
   //     text,
   //   };
   //   tg.sendData(JSON.stringify(data));
-  // }, [text, tg]);
+  // };
+  const onSendData = React.useCallback(() => {
+    const data = {
+      text,
+    };
+    tg.sendData(JSON.stringify(data));
+  }, [text, tg]);
 
-  // React.useEffect(() => {
-  //   tg.onEvent("mainButtonClicked", onSendData);
-  //   return () => {
-  //     tg.offEvent("mainButtonClicked", onSendData);
-  //   };
-  // }, [onSendData, tg]);
+  const onClick = () => {
+    return true;
+  };
+  console.log(onClick);
+  React.useEffect(() => {
+    tg.onEvent("mainButtonClicked", onSendData);
+    return () => {
+      tg.offEvent("mainButtonClicked", onSendData);
+    };
+    // eslint-disable-next-line
+  }, [onSendData]);
 
-  // React.useEffect(() => {
-  //   tg.MainButton.setParams({
-  //     text: "Отправить",
-  //   });
-  // }, [tg.MainButton]);
+  React.useEffect(() => {
+    tg.MainButton.setParams({
+      text: "Отправить",
+    });
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    if (!onClick) {
+      tg.MainButton.hide();
+    } else {
+      tg.MainButton.show();
+    }
+  }, [text, tg.MainButton]);
 
   return (
     <div key={id} className="tasks__items-row">
@@ -62,7 +74,7 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
           </svg>
         </label>
       </div> */}
-      <button onClick={onChangeCheckbox}>Отправить</button>
+      <button onClick={() => onClick()}>Отправить</button>
       <p>{text}</p>
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
