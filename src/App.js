@@ -59,8 +59,9 @@ function App() {
       .patch("https://nrow-gamy-chef.glitch.me/colors/tasks/" + taskObj.id, {
         text: newTaskText,
       })
-      .catch(() => {
+      .catch((e) => {
         alert("Не удалось обновить задачу");
+        console.log(e);
       });
   };
 
@@ -75,8 +76,9 @@ function App() {
       setLists(newList);
       axios
         .delete("https://nrow-gamy-chef.glitch.me/colors/tasks/" + taskId)
-        .catch(() => {
+        .catch((e) => {
           alert("Не удалось удалить задачу");
+          console.log(e);
         });
     }
   };
@@ -98,8 +100,9 @@ function App() {
       .patch("https://nrow-gamy-chef.glitch.me/colors/tasks/" + taskId, {
         completed,
       })
-      .catch(() => {
+      .catch((e) => {
         alert("Не удалось обновить задачу");
+        console.log(e);
       });
   };
 

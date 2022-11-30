@@ -26,8 +26,9 @@ const Tasks = ({
         .patch("http://localhost:3001/lists/" + list.id, {
           name: newTitle,
         })
-        .catch(() => {
+        .catch((e) => {
           alert("Не удалось обновить название списка");
+          console.log(e);
         });
     }
   };
