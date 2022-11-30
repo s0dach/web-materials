@@ -4,15 +4,15 @@ import { useTelegram } from "../../hooks/useTelegram";
 const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
   const { tg } = useTelegram();
 
-  // const onChangeCheckbox = (e) => {
-  //   // console.log(list.id, id, e.target.checked);
-  //   // console.log(text);
-  //   tg.MainButton.show();
-  //   const data = {
-  //     text,
-  //   };
-  //   tg.sendData(JSON.stringify(data));
-  // };
+  const onChangeCheckbox = (e) => {
+    // console.log(list.id, id, e.target.checked);
+    // console.log(text);
+    tg.MainButton.show();
+    const data = {
+      text,
+    };
+    tg.sendData(JSON.stringify(data));
+  };
   const onSendData = React.useCallback(() => {
     const data = {
       text,
@@ -74,7 +74,7 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
           </svg>
         </label>
       </div> */}
-      <button onClick={() => onClick()}>Отправить</button>
+      <button onClick={onChangeCheckbox}>Отправить</button>
       <p>{text}</p>
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
