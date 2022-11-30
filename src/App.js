@@ -12,13 +12,11 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(
-        "https://narrow-gamy-chef.glitch.me/lists?_expand=color&_embed=tasks"
-      )
+      .get("http://nrow-gamy-chef.glitch.me/lists?_expand=color&_embed=tasks")
       .then(({ data }) => {
         setLists(data);
       });
-    axios.get("https://narrow-gamy-chef.glitch.me/colors").then(({ data }) => {
+    axios.get("http://nrow-gamy-chef.glitch.me/colors").then(({ data }) => {
       setColors(data);
     });
   }, []);
@@ -58,7 +56,7 @@ function App() {
     });
     setLists(newList);
     axios
-      .patch("https://narrow-gamy-chef.glitch.me/colors/tasks/" + taskObj.id, {
+      .patch("http://nrow-gamy-chef.glitch.me/colors/tasks/" + taskObj.id, {
         text: newTaskText,
       })
       .catch(() => {
@@ -76,7 +74,7 @@ function App() {
       });
       setLists(newList);
       axios
-        .delete("https://narrow-gamy-chef.glitch.me/colors/tasks/" + taskId)
+        .delete("http://nrow-gamy-chef.glitch.me/colors/tasks/" + taskId)
         .catch(() => {
           alert("Не удалось удалить задачу");
         });
@@ -97,7 +95,7 @@ function App() {
     });
     setLists(newList);
     axios
-      .patch("https://narrow-gamy-chef.glitch.me/colors/tasks/" + taskId, {
+      .patch("http://nrow-gamy-chef.glitch.me/colors/tasks/" + taskId, {
         completed,
       })
       .catch(() => {
