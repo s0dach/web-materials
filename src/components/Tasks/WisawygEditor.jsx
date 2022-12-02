@@ -54,7 +54,7 @@ export const TextEditor = ({ value, setFieldValue, handleSubmit, addTask }) => {
       xhr.addEventListener("load", () => {
         const response = JSON.parse(xhr.responseText);
         console.log(response);
-        resolve(response);
+        resolve({ data: { link: response.url } });
       });
       xhr.addEventListener("error", () => {
         const error = JSON.parse(xhr.responseText);
