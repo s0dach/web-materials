@@ -55,11 +55,11 @@ const Task = ({
       tg.MainButton.show();
     }
   }, [text, tg.MainButton]);
-  const [inputValue, setInputValue] = React.useState("");
-  let [isClose, setIsClose] = React.useState(false);
-  let handleSubmit = () => {
-    setIsClose(true);
-  };
+  // const [inputValue, setInputValue] = React.useState("");
+  // let [isClose, setIsClose] = React.useState(false);
+  // let handleSubmit = () => {
+  //   setIsClose(true);
+  // };
 
   return (
     <div key={id} className="tasks__items-row">
@@ -91,8 +91,8 @@ const Task = ({
       <button onClick={onChangeCheckbox}>Отправить</button>
       <div>
         <TextEditor
-          handleSubmit={handleSubmit}
-          setFieldValue={(value) => setInputValue(value)}
+          // handleSubmit={handleSubmit}
+          // setFieldValue={(value) => setInputValue(value)}
           value={text}
         />
       </div>
