@@ -23,7 +23,6 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
   const onClick = () => {
     return true;
   };
-  console.log(onClick);
   React.useEffect(() => {
     tg.onEvent("mainButtonClicked", onSendData);
     return () => {

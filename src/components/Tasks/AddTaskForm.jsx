@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-
 import addSvg from "../../assets/img/add.svg";
+import { TextEditor } from "./WisawygEditor";
 
 const AddTaskForm = ({ list, onAddTask }) => {
   const [visibleForm, setFormVisible] = useState(false);
@@ -33,7 +33,6 @@ const AddTaskForm = ({ list, onAddTask }) => {
         setIsLoading(false);
       });
   };
-
   return (
     <div className="tasks__form">
       {!visibleForm ? (
@@ -43,13 +42,20 @@ const AddTaskForm = ({ list, onAddTask }) => {
         </div>
       ) : (
         <div className="tasks__form-block">
-          <input
+          {/* <input
             value={inputValue}
             className="field"
             type="text"
             placeholder="Текст материала"
             onChange={(e) => setInputValue(e.target.value)}
-          />
+          /> */}
+          <div>
+            <TextEditor
+              // handleSubmit={handleSubmit}
+              setFieldValue={(value) => setInputValue(value)}
+              value={inputValue}
+            />
+          </div>
           <button disabled={isLoading} onClick={addTask} className="button">
             {isLoading ? "Добавление..." : "Добавить материал"}
           </button>
