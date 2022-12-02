@@ -12,6 +12,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
     setFormVisible(!visibleForm);
     setInputValue("");
   };
+  console.log(inputValue);
 
   const addTask = () => {
     const obj = {
