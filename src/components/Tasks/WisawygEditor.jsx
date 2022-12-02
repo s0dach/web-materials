@@ -4,7 +4,7 @@ import { convertToRaw, EditorState, convertFromRaw } from "draft-js";
 import { markdownToDraft, draftToMarkdown } from "markdown-draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-export const TextEditor = ({ value, setFieldValue, handleSubmit }) => {
+export const TextEditor = ({ value, setFieldValue, handleSubmit, addTask }) => {
   // Получаем содержимое
   const prepareDraft = (value) => {
     const draft = markdownToDraft(value);
@@ -79,7 +79,7 @@ export const TextEditor = ({ value, setFieldValue, handleSubmit }) => {
           // editorClassName={!isClose ? classes.customEditor : undefined}
           onEditorStateChange={onEditorStateChange}
           onBlur={() => {
-            // handleSubmit();
+            // addTask();
             setIsClose(true);
           }}
           toolbar={{

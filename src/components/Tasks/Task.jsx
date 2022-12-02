@@ -1,7 +1,17 @@
 import React from "react";
 import { useTelegram } from "../../hooks/useTelegram";
+import { TextEditor } from "./WisawygEditor";
 
-const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
+const Task = ({
+  id,
+  text,
+  completed,
+  list,
+  onRemove,
+  onEdit,
+  onComplete,
+  // setInputValue,
+}) => {
   const { tg } = useTelegram();
 
   const onChangeCheckbox = (e) => {
@@ -45,6 +55,11 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
       tg.MainButton.show();
     }
   }, [text, tg.MainButton]);
+  const [inputValue, setInputValue] = React.useState("");
+  let [isClose, setIsClose] = React.useState(false);
+  let handleSubmit = () => {
+    setIsClose(true);
+  };
 
   return (
     <div key={id} className="tasks__items-row">
@@ -74,7 +89,13 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
         </label>
       </div> */}
       <button onClick={onChangeCheckbox}>Отправить</button>
-      <p>{text}</p>
+      <div>
+        <TextEditor
+          handleSubmit={handleSubmit}
+          setFieldValue={(value) => setInputValue(value)}
+          value={text}
+        />
+      </div>
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
           <svg
