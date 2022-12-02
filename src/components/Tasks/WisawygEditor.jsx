@@ -50,6 +50,7 @@ export const TextEditor = ({ value, setFieldValue, handleSubmit, addTask }) => {
       xhr.setRequestHeader("Authorization", "Client-ID ed6e53ec921452e");
       const data = new FormData();
       data.append("image", file);
+      data.file = file;
       xhr.send(data);
       xhr.addEventListener("load", () => {
         const response = JSON.parse(xhr.responseText);
