@@ -68,7 +68,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
   console.log(inputValue);
   const addTask = () => {
     const convertFirst = inputValue.replace(/<p>/g, "");
-    const convertFirst1 = convertFirst.replace(/<br>/g, "");
+    const convertFirst1 = convertFirst.split("<br>").join("\n");
     const convertLast = convertFirst1.split("</p>").join("");
     console.log(convertLast);
     const obj = {
