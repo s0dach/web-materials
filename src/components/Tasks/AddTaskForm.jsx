@@ -68,7 +68,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
   console.log(inputValue);
   const addTask = () => {
     const convertFirst = inputValue.replace(/<p>/g, "");
-    const convertFirst1 = convertFirst.split("<br>").join("%0A");
+    const convertFirst1 = convertFirst.replace(/<br>/g, "<br />");
     const convertLast = convertFirst1.split("</p>").join("");
     console.log("fenslf", convertLast);
     const obj = {
