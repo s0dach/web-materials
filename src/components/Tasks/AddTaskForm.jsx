@@ -68,7 +68,8 @@ const AddTaskForm = ({ list, onAddTask }) => {
   console.log(inputValue);
   const addTask = () => {
     const convertFirst = inputValue.replace(/<p>/g, "");
-    const convertLast = convertFirst.split("</p>").join("");
+    const convertFirst1 = convertFirst.replace(/<br>/g, "");
+    const convertLast = convertFirst1.split("</p>").join("");
     console.log(convertLast);
     const obj = {
       listId: list.id,
