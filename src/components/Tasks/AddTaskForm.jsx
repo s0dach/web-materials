@@ -10,7 +10,7 @@ import { ImageUpload } from "quill-image-upload";
 // const fontSizeArr = ["14px", "16px", "18px"];
 Quill.register("modules/imageUpload", ImageUpload);
 
-const AddTaskForm = ({ list, onAddTask, blog }) => {
+const AddTaskForm = ({ list, onAddTask }) => {
   const [visibleForm, setFormVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState("");
@@ -29,11 +29,50 @@ const AddTaskForm = ({ list, onAddTask, blog }) => {
 
   const editorRef = React.useRef();
 
+  const modules = React.useMemo(
+    () => ({
+      toolbar: [["bold", "italic", "underline", "strike"], ["image"]],
+      clipboard: {
+        matchVisual: false,
+      },
+      // imageResize: {
+      //   modules: ["Resize", "DisplaySize"],
+      // },
+      imageUpload: {
+        url: "https://api.imgur.com/3/image", // server url. If the url is empty then the base64 returns
+        method: "POST", // change query method, default 'POST'
+        name: "image", // custom form name
+        withCredentials: false, // withCredentials
+        headers: {
+          Authorization: "Client-ID ed6e53ec921452e",
+        },
+        // personalize successful callback and call next function to insert new url to the editor
+        callbackOK: (serverResponse, next) => {
+          next(serverResponse.data.link);
+        },
+        // personalize failed callback
+        callbackKO: (serverError) => {
+          alert(serverError);
+        },
+        // optional
+        // add callback when a image have been chosen
+        checkBeforeSend: (file, next) => {
+          console.log(file);
+          next(file); // go back to component and send to the server
+        },
+      },
+    }),
+    []
+  );
+
   console.log(inputValue);
   const addTask = () => {
+    const convertFirst = inputValue.replace(/<p>/g, "");
+    const convertLast = convertFirst.split("</p>").join("");
+    console.log(convertLast);
     const obj = {
       listId: list.id,
-      text: inputValue,
+      text: convertLast,
       completed: false,
     };
     setIsLoading(true);
@@ -71,43 +110,9 @@ const AddTaskForm = ({ list, onAddTask, blog }) => {
               value={inputValue}
               onChange={(e) => setInputValue(e)}
               ref={editorRef}
-              modules={{
-                toolbar: [["bold", "italic", "underline", "strike"], ["image"]],
-                clipboard: {
-                  matchVisual: false,
-                },
-                // imageResize: {
-                //   modules: ["Resize", "DisplaySize"],
-                // },
-                imageUpload: {
-                  url: "https://api.imgur.com/3/image", // server url. If the url is empty then the base64 returns
-                  method: "POST", // change query method, default 'POST'
-                  name: "image", // custom form name
-                  withCredentials: false, // withCredentials
-                  headers: {
-                    Authorization: "Client-ID ed6e53ec921452e",
-                  },
-                  // personalize successful callback and call next function to insert new url to the editor
-                  callbackOK: (serverResponse, next) => {
-                    next(serverResponse.data.link);
-                  },
-                  // personalize failed callback
-                  callbackKO: (serverError) => {
-                    alert(serverError);
-                  },
-                  // optional
-                  // add callback when a image have been chosen
-                  checkBeforeSend: (file, next) => {
-                    console.log(file);
-                    next(file); // go back to component and send to the server
-                  },
-                },
-              }}
+              modules={modules}
               placeholder="Введите текст"
             />
-            {/* <div dangerouslySetInnerHTML={{ __html: blog }} /> */}
-
-            {/* <ReactQuill value={blog} readOnly theme={"bubble"} /> */}
           </div>
           <button disabled={isLoading} onClick={addTask} className="button">
             {isLoading ? "Добавление..." : "Добавить материал"}
