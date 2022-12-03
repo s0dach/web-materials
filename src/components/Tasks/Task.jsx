@@ -1,6 +1,7 @@
 import React from "react";
+import ReactQuill from "react-quill";
 import { useTelegram } from "../../hooks/useTelegram";
-import { TextEditor } from "./WisawygEditor";
+// import { TextEditor } from "./WisawygEditor";
 
 const Task = ({
   id,
@@ -88,14 +89,11 @@ const Task = ({
           </svg>
         </label>
       </div> */}
-      <button onClick={onChangeCheckbox}>Отправить</button>
-      <div>
-        <TextEditor
-          // handleSubmit={handleSubmit}
-          // setFieldValue={(value) => setInputValue(value)}
-          value={text}
-        />
-      </div>
+      <button className="btn" onClick={onChangeCheckbox}>
+        Отправить
+      </button>
+      {/* <ReactQuill /> */}
+      <ReactQuill value={text} readOnly theme={"bubble"} />
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
           <svg

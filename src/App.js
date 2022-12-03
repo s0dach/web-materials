@@ -58,7 +58,7 @@ function App() {
     });
     setLists(newList);
     axios
-      .patch("https://narrow-gamy-chef.glitch.me/colors/tasks/" + taskObj.id, {
+      .patch("https://narrow-gamy-chef.glitch.me/tasks/" + taskObj.id, {
         text: newTaskText,
       })
       .catch((e) => {

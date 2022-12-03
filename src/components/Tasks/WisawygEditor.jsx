@@ -1,99 +1,44 @@
-import React from "react";
-import { Editor } from "react-draft-wysiwyg";
-import { convertToRaw, EditorState, convertFromRaw } from "draft-js";
-import { markdownToDraft, draftToMarkdown } from "markdown-draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+// import React, { useRef, useState } from "react";
+// import ReactQuill from "react-quill"; // ES6
+// import "react-quill/dist/quill.snow.css"; // ES6
+// // import ImageResize from "quill-image-resize-module-plus";
 
-export const TextEditor = ({ value, setFieldValue, handleSubmit, addTask }) => {
-  // Получаем содержимое
-  const prepareDraft = (value) => {
-    const draft = markdownToDraft(value);
-    const contentState = convertFromRaw(draft);
-    const editorState = EditorState.createWithContent(contentState);
-    return editorState;
-  };
+// import "../styles.css";
 
-  const [editorState, setEditorState] = React.useState(
-    value ? prepareDraft(value) : EditorState.createEmpty()
-  );
+// // const fontSizeArr = ["14px", "16px", "18px"];
 
-  const onEditorStateChange = (editorState) => {
-    const forFormik = draftToMarkdown(
-      convertToRaw(editorState.getCurrentContent())
-    );
-    setFieldValue(forFormik);
-    setEditorState(editorState);
-  };
+// export default function TextEditor({ inputValue, onChange }) {
+//   // const [blog, setBlog] = useState("");
+//   // console.log(inputValue);
+//   // useMemo(() => {
+//   //   const Size = Quill.import("attributors/style/size");
+//   //   Size.whitelist = fontSizeArr;
+//   //   Quill.register(Size, true);
+//   //   Quill.register("modules/imageResize", ImageResize);
+//   // }, []);
 
-  //Функция добавления картинки (imgur.com)
-  // const uploadImageCallBack = async (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const formData = new FormData();
-  //     formData.append("image", file);
-  //     fetch("https://api.imgur.com/3/image", {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization: "Client-ID ed6e53ec921452e",
-  //         Accept: "application/json",
-  //       },
-  //       body: formData,
-  //     })
-  //       .then(resolve)
-  //       .catch(reject);
-  //   });
-  // };
+//   const editorRef = useRef();
 
-  function uploadImageCallBack(file) {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://api.imgur.com/3/image");
-      xhr.setRequestHeader("Authorization", "Client-ID ed6e53ec921452e");
-      const data = new FormData();
-      data.append("image", file);
-      xhr.send(data.link);
-      xhr.addEventListener("load", () => {
-        const response = JSON.parse(xhr.responseText);
-        console.log(response);
-        resolve(response);
-      });
-      xhr.addEventListener("error", () => {
-        const error = JSON.parse(xhr.responseText);
-        console.log(error);
-        reject(error);
-      });
-    });
-  }
-  // клик по текстовому полю.
-  const [isClose, setIsClose] = React.useState(true);
+//   return (
+//     <div className="App">
+//       <ReactQuill
+//         value={inputValue}
+//         onChange={(v) => onChange(v)}
+//         ref={editorRef}
+//         modules={{
+//           toolbar: [["bold", "italic", "underline", "strike"], ["image"]],
+//           clipboard: {
+//             matchVisual: false,
+//           },
+//           // imageResize: {
+//           //   modules: ["Resize", "DisplaySize"],
+//           // },
+//         }}
+//         placeholder="Your new awesome Huspy blog"
+//       />
+//       {/* <div dangerouslySetInnerHTML={{ __html: blog }} /> */}
 
-  return (
-    <div style={{ marginTop: "10px" }}>
-      <div
-        // className={isClose ? classes.editor : undefined}
-        onClick={() => setIsClose(false)}
-      >
-        <Editor
-          toolbarHidden={isClose}
-          readOnly={isClose}
-          editorState={editorState}
-          // editorClassName={!isClose ? classes.customEditor : undefined}
-          onEditorStateChange={onEditorStateChange}
-          onBlur={() => {
-            // addTask();
-            setIsClose(true);
-          }}
-          toolbar={{
-            options: ["inline", "blockType", "link", "image"],
-            image: {
-              uploadCallback: uploadImageCallBack,
-              alt: { present: true, mandatory: true },
-            },
-          }}
-          localization={{
-            locale: "ru",
-          }}
-        />
-      </div>
-    </div>
-  );
-};
+//       {/* <ReactQuill value={blog} readOnly theme={"bubble"} /> */}
+//     </div>
+//   );
+// }

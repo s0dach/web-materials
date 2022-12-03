@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import addSvg from "../../assets/img/add.svg";
-import { TextEditor } from "./WisawygEditor";
+import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css"; // ES6
 
-const AddTaskForm = ({ list, onAddTask }) => {
+import "../styles.css";
+import { ImageUpload } from "quill-image-upload";
+
+// const fontSizeArr = ["14px", "16px", "18px"];
+Quill.register("modules/imageUpload", ImageUpload);
+
+const AddTaskForm = ({ list, onAddTask, blog }) => {
   const [visibleForm, setFormVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState("");
@@ -12,8 +19,17 @@ const AddTaskForm = ({ list, onAddTask }) => {
     setFormVisible(!visibleForm);
     setInputValue("");
   };
-  console.log(inputValue);
 
+  // React.useMemo(() => {
+  //   const Size = Quill.import("attributors/style/size");
+  //   Size.whitelist = fontSizeArr;
+  //   Quill.register(Size, true);
+  //   Quill.register("modules/imageResize", ImageResize);
+  // }, []);
+
+  const editorRef = React.useRef();
+
+  console.log(inputValue);
   const addTask = () => {
     const obj = {
       listId: list.id,
@@ -50,12 +66,48 @@ const AddTaskForm = ({ list, onAddTask }) => {
             placeholder="Текст материала"
             onChange={(e) => setInputValue(e.target.value)}
           /> */}
-          <div>
-            <TextEditor
-              // handleSubmit={handleSubmit}
-              setFieldValue={(value) => setInputValue(value)}
+          <div className="App">
+            <ReactQuill
               value={inputValue}
+              onChange={(e) => setInputValue(e)}
+              ref={editorRef}
+              modules={{
+                toolbar: [["bold", "italic", "underline", "strike"], ["image"]],
+                clipboard: {
+                  matchVisual: false,
+                },
+                // imageResize: {
+                //   modules: ["Resize", "DisplaySize"],
+                // },
+                imageUpload: {
+                  url: "https://api.imgur.com/3/image", // server url. If the url is empty then the base64 returns
+                  method: "POST", // change query method, default 'POST'
+                  name: "image", // custom form name
+                  withCredentials: false, // withCredentials
+                  headers: {
+                    Authorization: "Client-ID ed6e53ec921452e",
+                  },
+                  // personalize successful callback and call next function to insert new url to the editor
+                  callbackOK: (serverResponse, next) => {
+                    next(serverResponse.data.link);
+                  },
+                  // personalize failed callback
+                  callbackKO: (serverError) => {
+                    alert(serverError);
+                  },
+                  // optional
+                  // add callback when a image have been chosen
+                  checkBeforeSend: (file, next) => {
+                    console.log(file);
+                    next(file); // go back to component and send to the server
+                  },
+                },
+              }}
+              placeholder="Введите текст"
             />
+            {/* <div dangerouslySetInnerHTML={{ __html: blog }} /> */}
+
+            {/* <ReactQuill value={blog} readOnly theme={"bubble"} /> */}
           </div>
           <button disabled={isLoading} onClick={addTask} className="button">
             {isLoading ? "Добавление..." : "Добавить материал"}

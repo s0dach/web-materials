@@ -84,6 +84,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      justify-content: space-between;
 
       &:hover &-actions {
         opacity: 1;
