@@ -31,7 +31,8 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   const modules = React.useMemo(
     () => ({
-      toolbar: [["bold", "italic", "underline", "strike"], ["image"]],
+      toolbar: [["bold"], ["image"]],
+      // ["bold", "italic", "underline", "strike"]
       clipboard: {
         matchVisual: false,
       },
@@ -67,15 +68,16 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   // console.log(inputValue);
   const addTask = () => {
+    const htmlTooMarkdown = htmlToMarkdown(inputValue);
     // const convertFirst = inputValue.replace(/<p>/g, "");
     // const convertFirst1 = convertFirst.replace(/<br>/g, "\n");
-    // const convertLast = convertFirst1.split("</p>").join("");
-    const markdown = htmlToMarkdown(inputValue);
+    const finishText = htmlTooMarkdown.split("**").join("*");
+
     // console.log("MARKDOWN", markdown);
 
     const obj = {
       listId: list.id,
-      text: markdown,
+      text: finishText,
       completed: false,
     };
     setIsLoading(true);
