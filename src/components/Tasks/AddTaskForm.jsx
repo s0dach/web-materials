@@ -73,7 +73,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
     console.log("fenslf", convertLast);
     const obj = {
       listId: list.id,
-      text: encodeURI(convertLast),
+      text: convertLast,
       completed: false,
     };
     setIsLoading(true);
