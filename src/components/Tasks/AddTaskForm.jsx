@@ -70,20 +70,15 @@ const AddTaskForm = ({ list, onAddTask }) => {
   // console.log(inputValue);
   const addTask = () => {
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
-    // const convertFirst = inputValue.replace(/<p>/g, "");
-    // const convertFirst2 = convertFirst.split("</p>").join("");
-    // // const convertFirst1 = convertFirst2.replace(/<br>/g, "<br/>");
-    // const convertFirst1 = convertFirst2.split("<br>").join("<br/>");
-    const finishText = htmlTooMarkdown.split("**").join("*");
-    // const test1 = finishText.split("![](").join("<img src=");
-    // const test2 = test1.split(".jpg)").join(".jpg>");
-    // <img src="https://i.imgur.com/IniwLyb.jpg">
+    const boldText = htmlTooMarkdown.split("**").join("*");
+    const firstFinishedText = boldText.split("![](").join("<img src=");
+    const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
 
     // console.log("MARKDOWN", markdown);
 
     const obj = {
       listId: list.id,
-      text: finishText,
+      text: lastFinishedText,
       completed: false,
     };
     setIsLoading(true);
