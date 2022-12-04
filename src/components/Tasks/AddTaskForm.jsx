@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css"; // ES6
 // import { htmlToMarkdown } from "./Parser";
 import "../styles.css";
 import { ImageUpload } from "quill-image-upload";
+import { htmlToMarkdown } from "./Parser";
 
 // const fontSizeArr = ["14px", "16px", "18px"];
 Quill.register("modules/imageUpload", ImageUpload);
@@ -68,17 +69,21 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   // console.log(inputValue);
   const addTask = () => {
-    // const htmlTooMarkdown = htmlToMarkdown(inputValue);
-    const convertFirst = inputValue.replace(/<p>/g, "");
-    const convertFirst2 = convertFirst.split("</p>").join("");
-    // const convertFirst1 = convertFirst2.replace(/<br>/g, "\n");
-    // const finishText = htmlTooMarkdown.split("**").join("*");
+    const htmlTooMarkdown = htmlToMarkdown(inputValue);
+    // const convertFirst = inputValue.replace(/<p>/g, "");
+    // const convertFirst2 = convertFirst.split("</p>").join("");
+    // // const convertFirst1 = convertFirst2.replace(/<br>/g, "<br/>");
+    // const convertFirst1 = convertFirst2.split("<br>").join("<br/>");
+    const finishText = htmlTooMarkdown.split("**").join("*");
+    const test1 = finishText.split("![]").join("<img src=");
+    const test2 = test1.split(".jpg").join(".jpg>");
+    // <img src="https://i.imgur.com/IniwLyb.jpg">
 
     // console.log("MARKDOWN", markdown);
 
     const obj = {
       listId: list.id,
-      text: convertFirst2,
+      text: test2,
       completed: false,
     };
     setIsLoading(true);
