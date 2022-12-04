@@ -71,14 +71,14 @@ const AddTaskForm = ({ list, onAddTask }) => {
     // const htmlTooMarkdown = htmlToMarkdown(inputValue);
     const convertFirst = inputValue.replace(/<p>/g, "");
     const convertFirst2 = convertFirst.split("</p>").join("");
-    const convertFirst1 = convertFirst2.replace(/<br>/g, "\n");
+    // const convertFirst1 = convertFirst2.replace(/<br>/g, "\n");
     // const finishText = htmlTooMarkdown.split("**").join("*");
 
     // console.log("MARKDOWN", markdown);
 
     const obj = {
       listId: list.id,
-      text: convertFirst1,
+      text: convertFirst2,
       completed: false,
     };
     setIsLoading(true);
