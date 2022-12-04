@@ -11,7 +11,7 @@ const Task = ({
   onRemove,
   onEdit,
   onComplete,
-  // setInputValue,
+  inputValue,
 }) => {
   const { tg } = useTelegram();
 
@@ -61,7 +61,8 @@ const Task = ({
   // let handleSubmit = () => {
   //   setIsClose(true);
   // };
-
+  // const FinishText = text.replace("*", "<b>")
+  console.log(text);
   return (
     <div key={id} className="tasks__items-row">
       {/* <div className="checkbox">

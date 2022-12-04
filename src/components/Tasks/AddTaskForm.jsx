@@ -3,7 +3,7 @@ import axios from "axios";
 import addSvg from "../../assets/img/add.svg";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
-import { htmlToMarkdown } from "./Parser";
+// import { htmlToMarkdown } from "./Parser";
 import "../styles.css";
 import { ImageUpload } from "quill-image-upload";
 
@@ -68,16 +68,16 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   // console.log(inputValue);
   const addTask = () => {
-    const htmlTooMarkdown = htmlToMarkdown(inputValue);
-    // const convertFirst = inputValue.replace(/<p>/g, "");
-    // const convertFirst1 = convertFirst.replace(/<br>/g, "\n");
-    const finishText = htmlTooMarkdown.split("**").join("*");
+    // const htmlTooMarkdown = htmlToMarkdown(inputValue);
+    const convertFirst = inputValue.replace(/<p>/g, "");
+    const convertFirst1 = convertFirst.replace(/<br>/g, "\n");
+    // const finishText = htmlTooMarkdown.split("**").join("*");
 
     // console.log("MARKDOWN", markdown);
 
     const obj = {
       listId: list.id,
-      text: finishText,
+      text: convertFirst1,
       completed: false,
     };
     setIsLoading(true);
