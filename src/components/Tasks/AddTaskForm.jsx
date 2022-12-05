@@ -71,7 +71,13 @@ const AddTaskForm = ({ list, onAddTask }) => {
   const addTask = () => {
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
     const boldText = htmlTooMarkdown.split("**").join("*");
-    const firstFinishedText = boldText.split("![](").join("<img src=");
+    const firstFinishedTextTest = boldText.split("![](").join("<img src=");
+    const lastFinishedTextTest = firstFinishedTextTest
+      .split(".png)")
+      .join(".png>");
+    const firstFinishedText = lastFinishedTextTest
+      .split("![](")
+      .join("<img src=");
     const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
 
     // console.log("MARKDOWN", markdown);
