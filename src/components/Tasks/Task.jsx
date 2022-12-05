@@ -1,7 +1,7 @@
+import markdown from "@wcj/markdown-to-html";
 import React from "react";
 import ReactQuill from "react-quill";
 import { useTelegram } from "../../hooks/useTelegram";
-import { markdownToHtml } from "./Parser";
 // import { TextEditor } from "./WisawygEditor";
 
 const Task = ({
@@ -65,8 +65,10 @@ const Task = ({
   const boldText = text.split("*").join("**");
   // const firstFinishedText = boldText.split("<img src=").join("![](");
   // const lastFinishedText = firstFinishedText.split(".jpg>)").join(".jpg");
-  const FinishText = markdownToHtml(boldText);
-  console.log(text);
+  // const FinishText = markdownToHtml(boldText);
+  // console.log(text);
+  const finishText = markdown(boldText);
+  // console.log(a);
   return (
     <div key={id} className="tasks__items-row">
       {/* <div className="checkbox">
@@ -95,10 +97,10 @@ const Task = ({
         </label>
       </div> */}
       <button className="btn" onClick={onChangeCheckbox}>
-        Отправить
+        ✓
       </button>
       {/* <ReactQuill /> */}
-      <ReactQuill value={FinishText} readOnly theme={"bubble"} />
+      <ReactQuill value={finishText} readOnly theme={"bubble"} />
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
           <svg

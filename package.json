@@ -1,8 +1,9 @@
 {
-  "name": "todo-app",
+  "name": "web-tg-bot",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@wcj/markdown-to-html": "^2.2.1",
     "axios": "^1.2.0",
     "classnames": "^2.3.2",
     "draft-convert": "^2.1.13",
@@ -21,7 +22,6 @@
     "rehype-parse": "^8.0.4",
     "rehype-remark": "^9.1.2",
     "remark": "^14.0.2",
-    "remark-html": "^15.0.1",
     "remark-stringify": "^10.0.2"
   },
   "scripts": {
