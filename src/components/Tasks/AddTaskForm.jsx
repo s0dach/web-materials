@@ -75,7 +75,10 @@ const AddTaskForm = ({ list, onAddTask }) => {
     const lastFinishedTextTest = firstFinishedTextTest
       .split(".png)")
       .join(".png>");
-    const lastFinishedText = lastFinishedTextTest.split(".jpg)").join(".jpg>");
+    const firstFinishedText = lastFinishedTextTest
+      .split("![](")
+      .join("<img src=");
+    const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
 
     // console.log("MARKDOWN", markdown);
 
