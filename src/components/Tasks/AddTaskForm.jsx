@@ -5,13 +5,13 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
 // import { htmlToMarkdown } from "./Parser";
 import "../styles.css";
-// import { ImageUpload } from "quill-image-upload";
+import { ImageUpload } from "quill-image-upload";
 import { htmlToMarkdown } from "./Parser";
-import { ImageHandler, AttachmentHandler } from "quill-upload";
+import { AttachmentHandler } from "quill-upload";
 
 // const fontSizeArr = ["14px", "16px", "18px"];
 // Quill.register("modules/imageUpload", ImageUpload);
-Quill.register("modules/imageHandler", ImageHandler);
+Quill.register("modules/imageHandler", ImageUpload);
 Quill.register("modules/attachmentHandler", AttachmentHandler);
 
 const AddTaskForm = ({ list, onAddTask }) => {
@@ -43,7 +43,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
       // imageResize: {
       //   modules: ["Resize", "DisplaySize"],
       // },
-      ImageHandler: {
+      ImageUpload: {
         url: "https://api.imgur.com/3/image", // server url. If the url is empty then the base64 returns
         method: "POST", // change query method, default 'POST'
         name: "image", // custom form name
