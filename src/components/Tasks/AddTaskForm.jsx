@@ -70,7 +70,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
     };
     setIsLoading(true);
     axios
-      .post("https://narrow-gamy-chef.glitch.me/tasks", obj)
+      .post("http://95.163.234.208:3500/tasks", obj)
       .then(({ data }) => {
         onAddTask(list.id, data);
         toggleFormVisible();

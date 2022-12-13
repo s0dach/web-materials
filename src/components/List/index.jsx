@@ -18,11 +18,9 @@ const List = ({
 }) => {
   const removeList = (item) => {
     if (window.confirm("Вы действительно хотите удалить список?")) {
-      axios
-        .delete("https://narrow-gamy-chef.glitch.me/lists/" + item.id)
-        .then(() => {
-          onRemove(item.id);
-        });
+      axios.delete("http://95.163.234.208:3500/lists/" + item.id).then(() => {
+        onRemove(item.id);
+      });
     }
   };
 

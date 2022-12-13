@@ -12,13 +12,11 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(
-        "https://narrow-gamy-chef.glitch.me/lists?_expand=color&_embed=tasks"
-      )
+      .get("http://95.163.234.208:3500/lists?_expand=color&_embed=tasks")
       .then(({ data }) => {
         setLists(data);
       });
-    axios.get("https://narrow-gamy-chef.glitch.me/colors").then(({ data }) => {
+    axios.get("http://95.163.234.208:3500/colors").then(({ data }) => {
       setColors(data);
     });
   }, []);
@@ -58,7 +56,7 @@ function App() {
     });
     setLists(newList);
     axios
-      .patch("https://narrow-gamy-chef.glitch.me/tasks/" + taskObj.id, {
+      .patch("http://95.163.234.208:3500/tasks/" + taskObj.id, {
         text: newTaskText,
       })
       .catch((e) => {
@@ -76,12 +74,10 @@ function App() {
         return item;
       });
       setLists(newList);
-      axios
-        .delete("https://narrow-gamy-chef.glitch.me/tasks/" + taskId)
-        .catch((e) => {
-          alert("Не удалось удалить задачу");
-          console.log(e);
-        });
+      axios.delete("http://95.163.234.208:3500/tasks/" + taskId).catch((e) => {
+        alert("Не удалось удалить задачу");
+        console.log(e);
+      });
     }
   };
 
@@ -99,7 +95,7 @@ function App() {
     });
     setLists(newList);
     axios
-      .patch("https://narrow-gamy-chef.glitch.me/tasks/" + taskId, {
+      .patch("http://95.163.234.208:3500/tasks/" + taskId, {
         completed,
       })
       .catch((e) => {
