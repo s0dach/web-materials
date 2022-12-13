@@ -1,105 +1,93 @@
 import markdown from "@wcj/markdown-to-html";
+import axios from "axios";
 import React from "react";
 import ReactQuill from "react-quill";
-import { useTelegram } from "../../hooks/useTelegram";
-// import { TextEditor } from "./WisawygEditor";
+import lectUsersId from "../../../src/lectUsersId.txt";
+import { htmlToMarkdown } from "../Parser/Parser";
 
-const Task = ({
-  id,
-  text,
-  completed,
-  list,
-  onRemove,
-  onEdit,
-  onComplete,
-  inputValue,
-}) => {
-  const { tg } = useTelegram();
+const Task = ({ id, text, list, onRemove, onEdit }) => {
+  //Токен определяющий бота
+  const token = "5960420624:AAEvKvDBpDv5u3aSG2_3jcLULzkZq85aKkA";
+  const uriApiMessage = `https://api.telegram.org/bot${token}/sendMessage`;
+  const uriApiPhoto = `https://api.telegram.org/bot${token}/sendPhoto`;
 
-  const onChangeCheckbox = (e) => {
-    // console.log(list.id, id, e.target.checked);
-    // console.log(text);
-    tg.MainButton.show();
-    const data = {
-      text,
-    };
-    tg.sendData(JSON.stringify(data));
-  };
-  const onSendData = React.useCallback(() => {
-    const data = {
-      text,
-    };
-    tg.sendData(JSON.stringify(data));
-  }, [text, tg]);
+  let usersId = [];
 
-  const onClick = () => {
-    return true;
-  };
-  React.useEffect(() => {
-    tg.onEvent("mainButtonClicked", onSendData);
-    return () => {
-      tg.offEvent("mainButtonClicked", onSendData);
-    };
-    // eslint-disable-next-line
-  }, [onSendData]);
+  const [lectUsers, setLectUsers] = React.useState();
+  React.useMemo(
+    () =>
+      fetch(lectUsersId)
+        .then((response) => response.text())
+        .then((textContent) => {
+          setLectUsers(textContent);
+        }),
+    []
+  );
 
-  React.useEffect(() => {
-    tg.MainButton.setParams({
-      text: "Отправить",
-    });
-    // eslint-disable-next-line
-  }, []);
+  // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
+  if (typeof lectUsers === "string") {
+    const result = lectUsers.split(",");
+    let usersSetId = new Set(result);
+    const uniqueIds = Array.from(usersSetId);
+    uniqueIds.splice(0, 1);
+    usersId = uniqueIds;
+  }
 
-  React.useEffect(() => {
-    if (!onClick) {
-      tg.MainButton.hide();
-    } else {
-      tg.MainButton.show();
+  const onClick = (e) => {
+    try {
+      const htmlTooMarkdown = htmlToMarkdown(finishText);
+      const boldText = htmlTooMarkdown.replace("**", "*");
+      const firstFinishedTextTest = boldText.split("![](").join("<img src=");
+      const lastFinishedTextTest = firstFinishedTextTest
+        .split(".png)")
+        .join(".png>");
+      const firstFinishedText = lastFinishedTextTest
+        .split("![](")
+        .join("<img src=");
+      const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
+      const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
+      const first_link = links?.[0];
+
+      usersId.forEach((userId) => {
+        if (first_link !== undefined) {
+          // Обрезаем конечный текст с картинкой
+
+          const firstFinishText = lastFinishedText.replace(
+            "<img src=" + first_link,
+            ""
+          );
+          const lastFinishText = firstFinishText.replace(">" + first_link, "");
+          const finishedText = lastFinishText.replace("<span><span>", "");
+          axios.post(uriApiPhoto, {
+            chat_id: userId,
+            photo: first_link,
+            caption: finishedText,
+            parse_mode: "Markdown",
+          });
+        }
+        if (first_link === undefined) {
+          axios.post(uriApiMessage, {
+            chat_id: userId,
+            parse_mode: "Markdown",
+            text: lastFinishedText,
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
     }
-  }, [text, tg.MainButton]);
-  // const [inputValue, setInputValue] = React.useState("");
-  // let [isClose, setIsClose] = React.useState(false);
-  // let handleSubmit = () => {
-  //   setIsClose(true);
-  // };
+  };
+
+  // Создаем коллекцию юзеров для записи
+  // const usersId = new Set();
   const boldText = text.split("*").join("**");
-  // const firstFinishedText = boldText.split("<img src=").join("![](");
-  // const lastFinishedText = firstFinishedText.split(".jpg>)").join(".jpg");
-  // const FinishText = markdownToHtml(boldText);
-  // console.log(text);
   const finishText = markdown(boldText);
-  // console.log(a);
+
   return (
     <div key={id} className="tasks__items-row">
-      {/* <div className="checkbox">
-        <input
-          onChange={onChangeCheckbox}
-          id={`task-${id}`}
-          type="checkbox"
-          checked={completed}
-        />
-        <label htmlFor={`task-${id}`}>
-          <svg
-            width="11"
-            height="8"
-            viewBox="0 0 11 8"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9.29999 1.20001L3.79999 6.70001L1.29999 4.20001"
-              stroke="#000"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </label>
-      </div> */}
-      <button className="btn" onClick={onChangeCheckbox}>
+      <button className="btn" onClick={onClick}>
         ✓
       </button>
-      {/* <ReactQuill /> */}
       <ReactQuill value={finishText} readOnly theme={"bubble"} />
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>
@@ -136,3 +124,52 @@ const Task = ({
 };
 
 export default Task;
+
+// const { tg } = useTelegram();
+
+// const onChangeCheckbox = (e) => {
+//   // console.log(list.id, id, e.target.checked);
+//   // console.log(text);
+//   tg.MainButton.show();
+//   const data = {
+//     text,
+//   };
+//   tg.sendData(JSON.stringify(data));
+// };
+// const onSendData = React.useCallback(() => {
+//   const data = {
+//     text,
+//   };
+//   tg.sendData(JSON.stringify(data));
+// }, [text, tg]);
+
+// const onClick = () => {
+//   return true;
+// };
+// React.useEffect(() => {
+//   tg.onEvent("mainButtonClicked", onSendData);
+//   return () => {
+//     tg.offEvent("mainButtonClicked", onSendData);
+//   };
+//   // eslint-disable-next-line
+// }, [onSendData]);
+
+// React.useEffect(() => {
+//   tg.MainButton.setParams({
+//     text: "Отправить",
+//   });
+//   // eslint-disable-next-line
+// }, []);
+
+// React.useEffect(() => {
+//   if (!onClick) {
+//     tg.MainButton.hide();
+//   } else {
+//     tg.MainButton.show();
+//   }
+// }, [text, tg.MainButton]);
+// const [inputValue, setInputValue] = React.useState("");
+// let [isClose, setIsClose] = React.useState(false);
+// let handleSubmit = () => {
+//   setIsClose(true);
+// };

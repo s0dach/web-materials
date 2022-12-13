@@ -3,12 +3,10 @@ import axios from "axios";
 import addSvg from "../../assets/img/add.svg";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
-// import { htmlToMarkdown } from "./Parser";
 import "../styles.css";
 import { ImageUpload } from "quill-image-upload";
-import { htmlToMarkdown } from "./Parser";
+import { htmlToMarkdown } from "../Parser/Parser";
 
-// const fontSizeArr = ["14px", "16px", "18px"];
 Quill.register("modules/imageUpload", ImageUpload);
 
 const AddTaskForm = ({ list, onAddTask }) => {
@@ -21,53 +19,38 @@ const AddTaskForm = ({ list, onAddTask }) => {
     setInputValue("");
   };
 
-  // React.useMemo(() => {
-  //   const Size = Quill.import("attributors/style/size");
-  //   Size.whitelist = fontSizeArr;
-  //   Quill.register(Size, true);
-  //   Quill.register("modules/imageResize", ImageResize);
-  // }, []);
-
   const editorRef = React.useRef();
 
   const modules = React.useMemo(
     () => ({
-      toolbar: [["bold"], ["image"]],
-      // ["bold", "italic", "underline", "strike"]
+      toolbar: [["image"]],
+      //["bold"],
       clipboard: {
         matchVisual: false,
       },
-      // imageResize: {
-      //   modules: ["Resize", "DisplaySize"],
-      // },
       imageUpload: {
-        url: "https://api.imgur.com/3/image", // server url. If the url is empty then the base64 returns
-        method: "POST", // change query method, default 'POST'
-        name: "image", // custom form name
-        withCredentials: false, // withCredentials
+        url: "https://api.imgur.com/3/image",
+        method: "POST",
+        name: "image",
+        withCredentials: false,
         headers: {
           Authorization: "Client-ID ed6e53ec921452e",
         },
-        // personalize successful callback and call next function to insert new url to the editor
         callbackOK: (serverResponse, next) => {
           next(serverResponse.data.link);
         },
-        // personalize failed callback
         callbackKO: (serverError) => {
           alert(serverError);
         },
-        // optional
-        // add callback when a image have been chosen
         checkBeforeSend: (file, next) => {
           console.log(file);
-          next(file); // go back to component and send to the server
+          next(file);
         },
       },
     }),
     []
   );
 
-  // console.log(inputValue);
   const addTask = () => {
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
     const boldText = htmlTooMarkdown.replace("**", "*");
@@ -79,8 +62,6 @@ const AddTaskForm = ({ list, onAddTask }) => {
       .split("![](")
       .join("<img src=");
     const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
-
-    // console.log("MARKDOWN", markdown);
 
     const obj = {
       listId: list.id,
@@ -110,13 +91,6 @@ const AddTaskForm = ({ list, onAddTask }) => {
         </div>
       ) : (
         <div className="tasks__form-block">
-          {/* <input
-            value={inputValue}
-            className="field"
-            type="text"
-            placeholder="Текст материала"
-            onChange={(e) => setInputValue(e.target.value)}
-          /> */}
           <div className="App">
             <ReactQuill
               value={inputValue}

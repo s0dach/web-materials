@@ -130,8 +130,8 @@ function App() {
   }, [lists, history]);
 
   return (
-    <div className="todo">
-      <div className="todo__sidebar">
+    <div className="lection">
+      <div className="lection__sidebar">
         <List
           onClickItem={(list) => {
             history.push(`/`);
@@ -175,7 +175,7 @@ function App() {
         )}
         <AddList onAdd={onAddList} colors={colors} />
       </div>
-      <div className="todo__tasks">
+      <div className="lection__tasks">
         <Route exact path="/">
           {lists &&
             lists.map((list) => (
