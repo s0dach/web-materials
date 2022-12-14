@@ -47,7 +47,8 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
       const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
-
+      //FIXME! Убрать пустую строку в массиве чтоб не падала ошибка в консоле
+      console.log(usersId);
       usersId.forEach((userId) => {
         if (first_link !== undefined) {
           // Обрезаем конечный текст с картинкой
@@ -59,15 +60,15 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
           const lastFinishText = firstFinishText.replace(">" + first_link, "");
           const finishedText = lastFinishText.replace("<span><span>", "");
           axios.post(uriApiPhoto, {
-            chat_id: userId,
+            chat_id: Number(userId),
             photo: first_link,
-            caption: finishedText,
+            caption: finishedText || "",
             parse_mode: "Markdown",
           });
         }
         if (first_link === undefined) {
           axios.post(uriApiMessage, {
-            chat_id: userId,
+            chat_id: Number(userId),
             parse_mode: "Markdown",
             text: lastFinishedText,
           });
