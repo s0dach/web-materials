@@ -2,7 +2,6 @@ import markdown from "@wcj/markdown-to-html";
 import axios from "axios";
 import React from "react";
 import ReactQuill from "react-quill";
-import lectUsersId from "../../../src/lectUsersId.txt";
 import { htmlToMarkdown } from "../Parser/Parser";
 
 const Task = ({ id, text, list, onRemove, onEdit }) => {
@@ -11,30 +10,19 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
   const uriApiMessage = `https://api.telegram.org/bot${token}/sendMessage`;
   const uriApiPhoto = `https://api.telegram.org/bot${token}/sendPhoto`;
 
-  let usersId = [];
+  const [data, setData] = React.useState(null);
 
-  const [lectUsers, setLectUsers] = React.useState();
-  React.useMemo(
-    () =>
-      fetch(lectUsersId)
-        .then((response) => response.text())
-        .then((textContent) => {
-          setLectUsers(textContent);
-        }),
-    []
-  );
-
-  // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
-  if (typeof lectUsers === "string") {
-    const result = lectUsers.split(",");
-    let usersSetId = new Set(result);
-    const uniqueIds = Array.from(usersSetId);
-    uniqueIds.splice(0, 1);
-    usersId = uniqueIds;
-  }
-
-  const onClick = (e) => {
+  React.useEffect(() => {
+    axios
+      .get("http://95.163.234.208:3500/userId")
+      .then((res) => setData(res.data[0].usersId));
+  }, []);
+  const onClick = async (e) => {
     try {
+      // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
+      const usersId = new Set(data);
+      console.log(usersId);
+
       const htmlTooMarkdown = htmlToMarkdown(finishText);
       const boldText = htmlTooMarkdown.replace("**", "*");
       const firstFinishedTextTest = boldText.split("![](").join("<img src=");
@@ -48,7 +36,6 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
       //FIXME! Убрать пустую строку в массиве чтоб не падала ошибка в консоле
-      console.log(usersId);
       usersId.forEach((userId) => {
         if (first_link !== undefined) {
           // Обрезаем конечный текст с картинкой
