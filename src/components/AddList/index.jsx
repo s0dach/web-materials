@@ -100,7 +100,7 @@ const AddList = ({ colors, onAdd }) => {
             onChange={(e) => setInputValue(e.target.value)}
             className="field"
             type="text"
-            placeholder="Название списка"
+            placeholder="Введите уникальное название!"
           />
 
           <div className="add-list__popup-colors">

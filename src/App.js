@@ -30,15 +30,17 @@ function App() {
     axios.patch("http://95.163.234.208:3500/userId/1", { usersId: [] });
     setState(true);
   };
-
-  axios.get("http://95.163.234.208:3500/userId").then((res) => {
-    if (res.data[0].usersId === []) {
-      setState(true);
-    }
-    if (res.data[0].usersId !== []) {
-      setState(false);
-    }
-  });
+  React.useEffect(() => {
+    axios.get("http://95.163.234.208:3500/userId").then((res) => {
+      if (res.data[0].usersId === []) {
+        setState(true);
+      }
+      if (res.data[0].usersId !== []) {
+        setState(false);
+      }
+      console.log(res.data[0].usersId !== []);
+    });
+  }, []);
 
   const onAddTask = (listId, taskObj) => {
     const newList = lists.map((item) => {
@@ -138,7 +140,7 @@ function App() {
       }
     });
   }, [lists, history]);
-
+  console.log(state);
   return (
     <div className="lection">
       <div className="lection__sidebar">
