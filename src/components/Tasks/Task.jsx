@@ -11,16 +11,15 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
   const uriApiPhoto = `https://api.telegram.org/bot${token}/sendPhoto`;
 
   const [data, setData] = React.useState(null);
-
+  // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
+  React.useEffect(() => {
+    axios
+      .get("http://95.163.234.208:3500/userId")
+      .then((res) => setData(res.data[0].usersId));
+  }, [data]);
+  const usersId = new Set(data);
   const onClick = async (e) => {
     try {
-      // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
-      await axios
-        .get("http://95.163.234.208:3500/userId")
-        .then((res) => setData(res.data[0].usersId));
-      const usersId = new Set(data);
-      console.log(usersId);
-
       const htmlTooMarkdown = htmlToMarkdown(finishText);
       const boldText = htmlTooMarkdown.replace("**", "*");
       const firstFinishedTextTest = boldText.split("![](").join("<img src=");
