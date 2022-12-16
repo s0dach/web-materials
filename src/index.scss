@@ -6,6 +6,7 @@
   font-family: "Roboto", -apple-system, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .lection {
@@ -33,7 +34,6 @@
     flex: 1;
     padding: 60px;
     overflow: auto;
-    background-color: #fffafa;
   }
 }
 
