@@ -25,6 +25,20 @@ function App() {
     const newList = [...lists, obj];
     setLists(newList);
   };
+  const [state, setState] = React.useState(false);
+  const closeLection = () => {
+    axios.patch("http://95.163.234.208:3500/userId/1", { usersId: [] });
+    setState(true);
+  };
+
+  axios.get("http://95.163.234.208:3500/userId").then((res) => {
+    if (res.data[0].usersId === []) {
+      setState(true);
+    }
+    if (res.data[0].usersId !== []) {
+      setState(false);
+    }
+  });
 
   const onAddTask = (listId, taskObj) => {
     const newList = lists.map((item) => {
@@ -172,6 +186,10 @@ function App() {
         <AddList onAdd={onAddList} colors={colors} />
       </div>
       <div className="lection__tasks">
+        <button disabled={state} className="btn" onClick={closeLection}>
+          Завершить сессию для всех
+        </button>
+
         <Route exact path="/">
           {lists &&
             lists.map((list) => (

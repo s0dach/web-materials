@@ -85,27 +85,37 @@
     border-color: #dbdbdb;
   }
 }
+
 .btn {
   display: inline-block;
   box-sizing: border-box;
-  padding: 0 15px;
+  padding: 0 20px;
   margin: 0 15px 15px 0;
   outline: none;
   border: none;
-  border-radius: 4px;
-  height: 36px;
-  line-height: 36px;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: 6px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 17px;
+  font-weight: 600;
   text-decoration: none;
-  color: #fff;
-  background-color: #1a73e8;
-  position: relative;
-  overflow: hidden;
-  vertical-align: top;
+  color: #e7f3ff;
+  background-color: #385898;
   cursor: pointer;
   user-select: none;
   appearance: none;
   touch-action: manipulation;
-  z-index: 1;
+}
+.btn:focus-visible {
+  box-shadow: 0 0 0 2px #666;
+}
+.btn:hover {
+  background-color: #4682b4;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+.btn:disabled {
+  pointer-events: none;
+  opacity: 0.65;
 }
