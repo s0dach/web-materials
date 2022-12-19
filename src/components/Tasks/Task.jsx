@@ -4,19 +4,26 @@ import React from "react";
 import ReactQuill from "react-quill";
 import { htmlToMarkdown } from "../Parser/Parser";
 
-const Task = ({ id, text, list, onRemove, onEdit }) => {
+const Task = ({ id, text, listId, list, onRemove, onEdit }) => {
   //Токен определяющий бота
   const token = "5960420624:AAEvKvDBpDv5u3aSG2_3jcLULzkZq85aKkA";
   const uriApiMessage = `https://api.telegram.org/bot${token}/sendMessage`;
   const uriApiPhoto = `https://api.telegram.org/bot${token}/sendPhoto`;
 
   const [data, setData] = React.useState(null);
+  const [tasksData, setTasksData] = React.useState();
   // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
   React.useEffect(() => {
     axios
       .get("http://95.163.234.208:3500/userId")
       .then((res) => setData(res.data[0].usersId));
   }, [data]);
+
+  React.useEffect(() => {
+    axios
+      .get("http://95.163.234.208:3500/tasks")
+      .then((res) => setTasksData(res.data));
+  }, [tasksData]);
   const usersId = new Set(data);
   const onClick = async (e) => {
     try {
@@ -32,9 +39,13 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
       const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
-      //FIXME! Убрать пустую строку в массиве чтоб не падала ошибка в консоле
-      usersId.forEach((userId) => {
-        if (first_link !== undefined) {
+      console.log(usersId);
+      console.log(text);
+      console.log(listId);
+      usersId.forEach((ids) => {
+        const userId = ids.slice(0, -3);
+        const taskIds = ids.slice(12);
+        if (first_link !== undefined && listId === Number(taskIds)) {
           // Обрезаем конечный текст с картинкой
 
           const firstFinishText = lastFinishedText.replace(
@@ -50,7 +61,7 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
             parse_mode: "Markdown",
           });
         }
-        if (first_link === undefined) {
+        if (first_link === undefined && listId === Number(taskIds)) {
           axios.post(uriApiMessage, {
             chat_id: Number(userId),
             parse_mode: "Markdown",
