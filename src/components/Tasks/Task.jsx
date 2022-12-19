@@ -43,8 +43,9 @@ const Task = ({ id, text, listId, list, onRemove, onEdit }) => {
       console.log(text);
       console.log(listId);
       usersId.forEach((ids) => {
-        const userId = ids.slice(0, -3);
-        const taskIds = ids.slice(12);
+        const remove = ids.split(",");
+        const userId = remove[0];
+        const taskIds = remove[1];
         if (first_link !== undefined && listId === Number(taskIds)) {
           // Обрезаем конечный текст с картинкой
 
