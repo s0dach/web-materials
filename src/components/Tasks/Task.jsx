@@ -54,6 +54,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
             "<img src=" + first_link,
             ""
           );
+
           const lastFinishText = firstFinishText.replace(">" + first_link, "");
           const finishedText = lastFinishText.replace("<span><span>", "");
           axios.post(uriApiPhoto, {

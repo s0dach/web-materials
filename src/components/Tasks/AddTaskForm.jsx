@@ -58,7 +58,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
   // const onSubmit = (e) => {
 
   // };
-  const addTask = (e) => {
+  const addTask = async (e) => {
     e.preventDefault();
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
     const boldText = htmlTooMarkdown.replace("**", "*");
@@ -81,7 +81,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
       completed: false,
     };
     setIsLoading(true);
-    axios
+    await axios
       .post("http://95.163.234.208:3500/tasks", obj)
       .then(({ data }) => {
         setDataId(data.id);
@@ -90,17 +90,19 @@ const AddTaskForm = ({ list, onAddTask }) => {
       })
       .catch((e) => {
         alert("Ошибка при добавлении задачи!");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
     const data = new FormData();
     data.append("file", file);
     data.append("data", dataId);
-    axios
+    await axios
       .post("http://95.163.234.208:8000/upload-file-to-google-drive", data)
       .then((e) => console.log("ok"))
-      .catch((e) => console.log("Ошибка"));
+      .catch((e) => console.log("Ошибка"))
+      .finally(() => {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, "3000");
+      });
 
     setFile("Вложений нет");
   };
