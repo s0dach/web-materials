@@ -98,7 +98,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
     data.append("file", file);
     data.append("data", dataId);
     axios
-      .post("//localhost:8000/upload-file-to-google-drive", data)
+      .post("http://95.163.234.208:8000/upload-file-to-google-drive", data)
       .then((e) => console.log("ok"))
       .catch((e) => console.log("Ошибка"));
 
