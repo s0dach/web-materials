@@ -119,3 +119,30 @@
   pointer-events: none;
   opacity: 0.65;
 }
+.custom-file-input {
+  color: transparent;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: "Прикрепить документ";
+  display: flex;
+  content: "Прикрепить документ";
+  background: #f4f6f8;
+  color: #444444;
+  border: 0;
+  padding: 3px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  justify-content: space-around;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active {
+  outline: 0;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}

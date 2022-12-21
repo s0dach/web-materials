@@ -13,6 +13,12 @@ const AddTaskForm = ({ list, onAddTask }) => {
   const [visibleForm, setFormVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState("");
+  const [file, setFile] = React.useState("Вложений нет");
+  const [dataId, setDataId] = React.useState("");
+
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   const toggleFormVisible = () => {
     setFormVisible(!visibleForm);
@@ -43,15 +49,17 @@ const AddTaskForm = ({ list, onAddTask }) => {
           alert(serverError);
         },
         checkBeforeSend: (file, next) => {
-          console.log(file);
           next(file);
         },
       },
     }),
     []
   );
+  // const onSubmit = (e) => {
 
-  const addTask = () => {
+  // };
+  const addTask = (e) => {
+    e.preventDefault();
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
     const boldText = htmlTooMarkdown.replace("**", "*");
     const firstFinishedTextTest = boldText.split("![](").join("<img src=");
@@ -65,13 +73,18 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
     const obj = {
       listId: list.id,
-      text: lastFinishedText,
+      text:
+        file === "Вложений нет"
+          ? lastFinishedText
+          : lastFinishedText + `<p><strong>Вложения:</strong>${file.name}</p>`,
+      documentId: 0,
       completed: false,
     };
     setIsLoading(true);
     axios
       .post("http://95.163.234.208:3500/tasks", obj)
       .then(({ data }) => {
+        setDataId(data.id);
         onAddTask(list.id, data);
         toggleFormVisible();
       })
@@ -81,7 +94,17 @@ const AddTaskForm = ({ list, onAddTask }) => {
       .finally(() => {
         setIsLoading(false);
       });
+    const data = new FormData();
+    data.append("file", file);
+    data.append("data", dataId);
+    axios
+      .post("//localhost:8000/upload-file-to-google-drive", data)
+      .then((e) => console.log("ok"))
+      .catch((e) => console.log("Ошибка"));
+
+    setFile("Вложений нет");
   };
+
   return (
     <div className="tasks__form">
       {!visibleForm ? (
@@ -100,9 +123,18 @@ const AddTaskForm = ({ list, onAddTask }) => {
               placeholder="Введите текст"
             />
           </div>
-          <button disabled={isLoading} onClick={addTask} className="button">
-            {isLoading ? "Добавление..." : "Добавить материал"}
-          </button>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button disabled={isLoading} onClick={addTask} className="button">
+              {isLoading ? "Добавление..." : "Добавить материал"}
+            </button>
+            {/* <button onClick={onSubmit}>ssads</button> */}
+            <input
+              type="file"
+              onChange={onFileChange}
+              class="custom-file-input"
+            />
+            {/* <input type="file" onChange={onFileChange} /> */}
+          </div>
           <button onClick={toggleFormVisible} className="button button--grey">
             Отмена
           </button>

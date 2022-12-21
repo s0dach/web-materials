@@ -38,7 +38,6 @@ function App() {
       if (res.data[0].usersId !== []) {
         setState(false);
       }
-      console.log(res.data[0].usersId !== []);
     });
   }, []);
 
@@ -135,12 +134,10 @@ function App() {
       const listId = history.location.pathname.split("lists/")[1];
       if (lists) {
         const list = lists.find((list) => list.id === Number(listId));
-        console.log(list);
         setActiveItem(list);
       }
     });
   }, [lists, history]);
-  console.log(state);
   return (
     <div className="lection">
       <div className="lection__sidebar">

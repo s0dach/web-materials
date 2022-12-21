@@ -4,29 +4,29 @@ import React from "react";
 import ReactQuill from "react-quill";
 import { htmlToMarkdown } from "../Parser/Parser";
 
-const Task = ({ id, text, listId, list, onRemove, onEdit }) => {
+const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
   //Токен определяющий бота
   const token = "5960420624:AAEvKvDBpDv5u3aSG2_3jcLULzkZq85aKkA";
   const uriApiMessage = `https://api.telegram.org/bot${token}/sendMessage`;
+  const uriDoc = `https://api.telegram.org/bot${token}/sendDocument`;
   const uriApiPhoto = `https://api.telegram.org/bot${token}/sendPhoto`;
 
   const [data, setData] = React.useState(null);
-  const [tasksData, setTasksData] = React.useState();
   // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
   React.useEffect(() => {
     axios
       .get("http://95.163.234.208:3500/userId")
       .then((res) => setData(res.data[0].usersId));
-  }, [data]);
-
-  React.useEffect(() => {
-    axios
-      .get("http://95.163.234.208:3500/tasks")
-      .then((res) => setTasksData(res.data));
-  }, [tasksData]);
+  }, []);
   const usersId = new Set(data);
   const onClick = async (e) => {
     try {
+      // axios.post(`https://api.telegram.org/bot${token}/sendDocument`, {
+      //   chat_id: 2050612190,
+      //   caption: "PRIVET",
+      //   document:
+      //     "https://drive.google.com/u/0/uc?id=1oYsYsQ_azQNCdnBj67QJUPbqbxSWdvAX&export=download",
+      // });
       const htmlTooMarkdown = htmlToMarkdown(finishText);
       const boldText = htmlTooMarkdown.replace("**", "*");
       const firstFinishedTextTest = boldText.split("![](").join("<img src=");
@@ -39,9 +39,10 @@ const Task = ({ id, text, listId, list, onRemove, onEdit }) => {
       const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
-      console.log(usersId);
-      console.log(text);
-      console.log(listId);
+      const finishMyText = lastFinishedText.replace(
+        "*Вложения:**",
+        "Вложения: "
+      );
       usersId.forEach((ids) => {
         const remove = ids.split(",");
         const userId = remove[0];
@@ -63,11 +64,21 @@ const Task = ({ id, text, listId, list, onRemove, onEdit }) => {
           });
         }
         if (first_link === undefined && listId === Number(taskIds)) {
-          axios.post(uriApiMessage, {
-            chat_id: Number(userId),
-            parse_mode: "Markdown",
-            text: lastFinishedText,
-          });
+          if (documentId !== 0) {
+            axios.post(uriDoc, {
+              chat_id: Number(userId),
+              // parse_mode: "Markdown",
+              caption: finishMyText,
+              document: `https://drive.google.com/u/0/uc?id=${documentId}&export=download`,
+            });
+          }
+          if (documentId === 0) {
+            axios.post(uriApiMessage, {
+              chat_id: Number(userId),
+              parse_mode: "Markdown",
+              text: lastFinishedText,
+            });
+          }
         }
       });
     } catch (err) {
@@ -77,6 +88,7 @@ const Task = ({ id, text, listId, list, onRemove, onEdit }) => {
 
   // Создаем коллекцию юзеров для записи
   // const usersId = new Set();
+
   const boldText = text.split("*").join("**");
   const finishText = markdown(boldText);
 
