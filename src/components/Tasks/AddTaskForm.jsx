@@ -95,7 +95,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
       date.append("file", file);
       date.append("data", id);
       axios
-        .post("http://localhost:8000/upload-file-to-google-drive", date)
+        .post("http://95.163.234.208:8000/upload-file-to-google-drive", date)
         .then((e) => console.log("ok"))
         .catch((e) => console.log("Ошибка"));
       setFormVisible(visibleForm);
