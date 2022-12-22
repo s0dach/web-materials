@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import addSvg from "../../assets/img/add.svg";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
 import "../styles.css";
@@ -12,7 +11,7 @@ Quill.register("modules/imageUpload", ImageUpload);
 const AddTaskForm = ({ list, onAddTask }) => {
   const [visibleForm, setFormVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = React.useState("Вложений нет");
   const [dataId, setDataId] = React.useState("");
 
@@ -59,7 +58,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   // };
   const addTask = async (e) => {
-    e.preventDefault();
+    setIsLoading(true);
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
     const boldText = htmlTooMarkdown.replace("**", "*");
     const firstFinishedTextTest = boldText.split("![](").join("<img src=");
@@ -80,7 +79,6 @@ const AddTaskForm = ({ list, onAddTask }) => {
       documentId: 0,
       completed: false,
     };
-    setIsLoading(true);
     await axios
       .post("http://95.163.234.208:3500/tasks", obj)
       .then(({ data }) => {
@@ -97,51 +95,48 @@ const AddTaskForm = ({ list, onAddTask }) => {
     await axios
       .post("http://95.163.234.208:8000/upload-file-to-google-drive", data)
       .then((e) => console.log("ok"))
-      .catch((e) => console.log("Ошибка"))
-      .finally(() => {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, "3000");
-      });
-
+      .catch((e) => console.log("Ошибка"));
+    setFormVisible(visibleForm);
     setFile("Вложений нет");
+    setTimeout(() => {
+      setIsLoading(false);
+    }, "3000");
   };
 
   return (
     <div className="tasks__form">
-      {!visibleForm ? (
+      {/* {!visibleForm ? (
         <div onClick={toggleFormVisible} className="tasks__form-new">
           <img src={addSvg} alt="Add icon" />
           <span>Новый материал</span>
         </div>
-      ) : (
-        <div className="tasks__form-block">
-          <div className="App">
-            <ReactQuill
-              value={inputValue}
-              onChange={(e) => setInputValue(e)}
-              ref={editorRef}
-              modules={modules}
-              placeholder="Введите текст"
-            />
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button disabled={isLoading} onClick={addTask} className="button">
-              {isLoading ? "Добавление..." : "Добавить материал"}
-            </button>
-            {/* <button onClick={onSubmit}>ssads</button> */}
-            <input
-              type="file"
-              onChange={onFileChange}
-              class="custom-file-input"
-            />
-            {/* <input type="file" onChange={onFileChange} /> */}
-          </div>
-          <button onClick={toggleFormVisible} className="button button--grey">
-            Отмена
-          </button>
+      ) : ( */}
+      <div className="tasks__form-block">
+        <div className="App">
+          <ReactQuill
+            value={inputValue}
+            onChange={(e) => setInputValue(e)}
+            ref={editorRef}
+            modules={modules}
+            placeholder="Введите текст"
+          />
         </div>
-      )}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button disabled={isLoading} onClick={addTask} className="button">
+            {isLoading ? "Добавление..." : "Добавить материал"}
+          </button>
+          {/* <button onClick={onSubmit}>ssads</button> */}
+          <input
+            type="file"
+            onChange={onFileChange}
+            class="custom-file-input"
+          />
+          {/* <input type="file" onChange={onFileChange} /> */}
+        </div>
+        <button onClick={toggleFormVisible} className="button button--grey">
+          Отмена
+        </button>
+      </div>
     </div>
   );
 };
