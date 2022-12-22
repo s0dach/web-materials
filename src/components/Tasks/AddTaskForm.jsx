@@ -13,7 +13,6 @@ const AddTaskForm = ({ list, onAddTask }) => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = React.useState("Вложений нет");
-  const [dataId, setDataId] = React.useState("");
 
   const onFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -79,28 +78,30 @@ const AddTaskForm = ({ list, onAddTask }) => {
       documentId: 0,
       completed: false,
     };
+    let id = 0;
     await axios
       .post("http://95.163.234.208:3500/tasks", obj)
       .then(({ data }) => {
-        setDataId(data.id);
+        id = data.id;
+
         onAddTask(list.id, data);
         toggleFormVisible();
       })
       .catch((e) => {
         alert("Ошибка при добавлении задачи!");
       });
-    const data = new FormData();
-    data.append("file", file);
-    data.append("data", dataId);
-    await axios
-      .post("http://95.163.234.208:8000/upload-file-to-google-drive", data)
-      .then((e) => console.log("ok"))
-      .catch((e) => console.log("Ошибка"));
-    setFormVisible(visibleForm);
-    setFile("Вложений нет");
     setTimeout(() => {
+      const date = new FormData();
+      date.append("file", file);
+      date.append("data", id);
+      axios
+        .post("http://localhost:8000/upload-file-to-google-drive", date)
+        .then((e) => console.log("ok"))
+        .catch((e) => console.log("Ошибка"));
+      setFormVisible(visibleForm);
+      setFile("Вложений нет");
       setIsLoading(false);
-    }, "3000");
+    }, "2000");
   };
 
   return (
