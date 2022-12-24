@@ -8,7 +8,7 @@ import Badge from "../Badge";
 
 import "./List.scss";
 
-const List = ({
+export const List = ({
   items,
   isRemovable,
   onClick,

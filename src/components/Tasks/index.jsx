@@ -9,7 +9,7 @@ import "./Tasks.scss";
 import AddTaskForm from "./AddTaskForm";
 import Task from "./Task";
 
-const Tasks = ({
+export const Tasks = ({
   list,
   onEditTitle,
   onAddTask,
@@ -62,5 +62,3 @@ const Tasks = ({
     </div>
   );
 };
-
-export default Tasks;

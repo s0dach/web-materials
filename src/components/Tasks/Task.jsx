@@ -11,16 +11,23 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
   const uriDoc = `https://api.telegram.org/bot${token}/sendDocument`;
   const uriApiPhoto = `https://api.telegram.org/bot${token}/sendPhoto`;
 
-  const [data, setData] = React.useState(null);
   // Приводим в нормальный вид текстовый документ с айдишниками приходящий с сервера для работы
-  React.useEffect(() => {
-    axios
-      .get("http://95.163.234.208:3500/userId")
-      .then((res) => setData(res.data[0].usersId));
-  }, []);
-  const usersId = new Set(data);
+  // React.useEffect(() => {
+  //   axios.get("http://95.163.234.208:3500/userId").then((res) => {
+  //     setData(res.data[0].usersId);
+  //     console.log(res);
+  //   });
+  // }, []);
+
+  // const usersId = new Set(data);
   const onClick = async (e) => {
     try {
+      let data = [];
+      await axios
+        .get(`http://95.163.234.208:3500/lists/${listId}`)
+        .then((res) => {
+          data = res.data.usersId;
+        });
       // axios.post(`https://api.telegram.org/bot${token}/sendDocument`, {
       //   chat_id: 2050612190,
       //   caption: "PRIVET",
@@ -43,11 +50,11 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
         "*Вложения:**",
         "Вложения: "
       );
-      usersId.forEach((ids) => {
-        const remove = ids.split(",");
-        const userId = remove[0];
-        const taskIds = remove[1];
-        if (first_link !== undefined && listId === Number(taskIds)) {
+      data.forEach((ids) => {
+        // const remove = ids.split(",");
+        // const userId = remove[0];
+        // const taskIds = remove[1];
+        if (first_link !== undefined) {
           // Обрезаем конечный текст с картинкой
 
           const firstFinishText = lastFinishedText.replace(
@@ -58,16 +65,16 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
           const lastFinishText = firstFinishText.replace(">" + first_link, "");
           const finishedText = lastFinishText.replace("<span><span>", "");
           axios.post(uriApiPhoto, {
-            chat_id: Number(userId),
+            chat_id: Number(ids),
             photo: first_link,
-            caption: finishedText || "",
+            caption: finishedText,
             parse_mode: "Markdown",
           });
         }
-        if (first_link === undefined && listId === Number(taskIds)) {
+        if (first_link === undefined) {
           if (documentId !== 0) {
             axios.post(uriDoc, {
-              chat_id: Number(userId),
+              chat_id: Number(ids),
               // parse_mode: "Markdown",
               caption: finishMyText,
               document: `https://drive.google.com/u/0/uc?id=${documentId}&export=download`,
@@ -75,7 +82,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
           }
           if (documentId === 0) {
             axios.post(uriApiMessage, {
-              chat_id: Number(userId),
+              chat_id: Number(ids),
               parse_mode: "Markdown",
               text: lastFinishedText,
             });

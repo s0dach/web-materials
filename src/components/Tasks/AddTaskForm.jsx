@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ReactQuill, { Quill } from "react-quill";
+import addSvg from "../../assets/img/add.svg";
 import "react-quill/dist/quill.snow.css"; // ES6
 import "../styles.css";
 import { ImageUpload } from "quill-image-upload";
@@ -106,38 +107,39 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   return (
     <div className="tasks__form">
-      {/* {!visibleForm ? (
+      {!visibleForm ? (
         <div onClick={toggleFormVisible} className="tasks__form-new">
           <img src={addSvg} alt="Add icon" />
           <span>Новый материал</span>
         </div>
-      ) : ( */}
-      <div className="tasks__form-block">
-        <div className="App">
-          <ReactQuill
-            value={inputValue}
-            onChange={(e) => setInputValue(e)}
-            ref={editorRef}
-            modules={modules}
-            placeholder="Введите текст"
-          />
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <button disabled={isLoading} onClick={addTask} className="button">
-            {isLoading ? "Добавление..." : "Добавить материал"}
+      ) : (
+        <div className="tasks__form-block">
+          <div className="App">
+            <ReactQuill
+              value={inputValue}
+              onChange={(e) => setInputValue(e)}
+              ref={editorRef}
+              modules={modules}
+              placeholder="Введите текст"
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button disabled={isLoading} onClick={addTask} className="button">
+              {isLoading ? "Добавление..." : "Добавить материал"}
+            </button>
+            {/* <button onClick={onSubmit}>ssads</button> */}
+            <input
+              type="file"
+              onChange={onFileChange}
+              className="custom-file-input"
+            />
+            {/* <input type="file" onChange={onFileChange} /> */}
+          </div>
+          <button onClick={toggleFormVisible} className="button button--grey">
+            Отмена
           </button>
-          {/* <button onClick={onSubmit}>ssads</button> */}
-          <input
-            type="file"
-            onChange={onFileChange}
-            class="custom-file-input"
-          />
-          {/* <input type="file" onChange={onFileChange} /> */}
         </div>
-        <button onClick={toggleFormVisible} className="button button--grey">
-          Отмена
-        </button>
-      </div>
+      )}
     </div>
   );
 };
