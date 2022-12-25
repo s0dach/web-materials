@@ -36,6 +36,7 @@ export const AddList = ({ colors, onAdd }) => {
       .post("http://95.163.234.208:3500/lists", {
         name: inputValue,
         colorId: seletedColor,
+        usersId: [],
       })
       .then(({ data }) => {
         const color = colors.filter((c) => c.id === seletedColor)[0];

@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { AuthContext } from "../context";
+import { AuthContext } from "../../context";
 
-import { privateRoute, publicRoute } from "../router";
+import { privateRoute, publicRoute } from "../../router";
 
 export const AppRouter = () => {
   const { isAuth } = React.useContext(AuthContext);

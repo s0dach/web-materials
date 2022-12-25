@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthContext } from "../../context";
-import "./style.css";
+import "./style.scss";
 export const Login = () => {
   const { setIsAuth } = React.useContext(AuthContext);
   const [valueLogin, setValueLogin] = React.useState("");
