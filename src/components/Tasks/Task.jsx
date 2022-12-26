@@ -45,14 +45,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
         .join("<img src=");
       const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
-      let first_link = "";
-      let video_link = "";
-      if (links?.[0].indexOf("imgur.com") !== -1) {
-        first_link = links?.[0];
-      } else {
-        video_link = links?.[0];
-      }
-
+      const first_link = links?.[0];
       const finishMyText = lastFinishedText.replace(
         "*Вложения:**",
         "Вложения: "
@@ -61,10 +54,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
         // const remove = ids.split(",");
         // const userId = remove[0];
         // const taskIds = remove[1];
-        if (
-          first_link !== undefined &&
-          first_link.indexOf("imgur.com") !== -1
-        ) {
+        if (first_link !== undefined) {
           // Обрезаем конечный текст с картинкой
 
           const firstFinishText = lastFinishedText.replace(
@@ -81,15 +71,6 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
             parse_mode: "Markdown",
           });
         }
-        if (first_link.indexOf("imgur.com") === -1) {
-          if (documentId === 0) {
-            axios.post(uriApiMessage, {
-              chat_id: Number(ids),
-              parse_mode: "Markdown",
-              text: `${lastFinishedText} + "${video_link}"`,
-            });
-          }
-        }
         if (first_link === undefined) {
           if (documentId !== 0) {
             axios.post(uriDoc, {
@@ -97,6 +78,13 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
               // parse_mode: "Markdown",
               caption: finishMyText,
               document: `https://drive.google.com/u/0/uc?id=${documentId}&export=download`,
+            });
+          }
+          if (documentId === 0) {
+            axios.post(uriApiMessage, {
+              chat_id: Number(ids),
+              parse_mode: "Markdown",
+              text: lastFinishedText,
             });
           }
         }
