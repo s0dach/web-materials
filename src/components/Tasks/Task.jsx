@@ -45,7 +45,14 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
         .join("<img src=");
       const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
-      const first_link = links?.[0];
+      let first_link = "";
+      let video_link = "";
+      if (links.indexOf("imgur.com") !== -1) {
+        first_link = links?.[0];
+      } else {
+        video_link = links?.[0];
+      }
+
       const finishMyText = lastFinishedText.replace(
         "*Вложения:**",
         "Вложения: "
@@ -84,7 +91,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
             axios.post(uriApiMessage, {
               chat_id: Number(ids),
               parse_mode: "Markdown",
-              text: lastFinishedText,
+              text: lastFinishedText + video_link,
             });
           }
         }
