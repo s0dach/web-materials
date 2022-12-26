@@ -28,7 +28,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   const modules = React.useMemo(
     () => ({
-      toolbar: [["bold", "|"], ["image"]],
+      toolbar: [["image"]],
       //["bold"],
       clipboard: {
         matchVisual: false,
