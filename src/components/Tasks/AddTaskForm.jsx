@@ -28,8 +28,8 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   const modules = React.useMemo(
     () => ({
-      toolbar: [["image"]],
-      //["bold"],
+      toolbar: [["bold", "italic"], ["image"]],
+      //["bold"],["code-block"]
       clipboard: {
         matchVisual: false,
       },
@@ -55,7 +55,6 @@ const AddTaskForm = ({ list, onAddTask }) => {
     []
   );
   // const onSubmit = (e) => {
-
   // };
   const addTask = async (e) => {
     setIsLoading(true);
@@ -70,14 +69,17 @@ const AddTaskForm = ({ list, onAddTask }) => {
     const firstFinishedText = lastFinishedTextTest
       .split("![](")
       .join("<img src=");
+    // const boldText = firstFinishedText.split("**").join("!!!");
+    // const italicText = boldText.split("*").join("@@");
+    // const boldFinish = italicText.split("!!!").join("**");
+    // const italicFinish = boldFinish.split("@@").join("*");
     const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
-
     const obj = {
       listId: list.id,
       text:
         file === "Вложений нет"
           ? lastFinishedText
-          : lastFinishedText + `<p><strong>Вложения:</strong>${file.name}</p>`,
+          : lastFinishedText + `\`[Вложения:${file.name}]\``,
       documentId: 0,
       completed: false,
     };

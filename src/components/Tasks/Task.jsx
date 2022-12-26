@@ -2,7 +2,6 @@ import markdown from "@wcj/markdown-to-html";
 import axios from "axios";
 import React from "react";
 import ReactQuill from "react-quill";
-import { htmlToMarkdown } from "../Parser/Parser";
 
 const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
   //Токен определяющий бота
@@ -34,9 +33,12 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       //   document:
       //     "https://drive.google.com/u/0/uc?id=1oYsYsQ_azQNCdnBj67QJUPbqbxSWdvAX&export=download",
       // });
-      const htmlTooMarkdown = htmlToMarkdown(finishText);
-      const boldText = htmlTooMarkdown.replace("**", "*");
-      const firstFinishedTextTest = boldText.split("![](").join("<img src=");
+      // const htmlTooMarkdown = htmlToMarkdown(finishText);
+      const boldText = text.split("**").join("!!!");
+      const italicText = boldText.split("*").join("@@@");
+      const boldTextFinish = italicText.split("!!!").join("*");
+      const allBItext = boldTextFinish.split("@@@").join("_");
+      const firstFinishedTextTest = allBItext.split("![](").join("<img src=");
       const lastFinishedTextTest = firstFinishedTextTest
         .split(".png)")
         .join(".png>");
@@ -75,7 +77,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
           if (documentId !== 0) {
             axios.post(uriDoc, {
               chat_id: Number(ids),
-              // parse_mode: "Markdown",
+              parse_mode: "Markdown",
               caption: finishMyText,
               document: `https://drive.google.com/u/0/uc?id=${documentId}&export=download`,
             });
@@ -97,8 +99,8 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
   // Создаем коллекцию юзеров для записи
   // const usersId = new Set();
 
-  const boldText = text.split("*").join("**");
-  const finishText = markdown(boldText);
+  // const boldText = text.split("*").join("**");
+  const finishText = markdown(text);
 
   return (
     <div key={id} className="tasks__items-row">
