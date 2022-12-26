@@ -86,7 +86,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
             axios.post(uriApiMessage, {
               chat_id: Number(ids),
               parse_mode: "Markdown",
-              text: lastFinishedText + video_link,
+              text: `${lastFinishedText} + "${video_link}"`,
             });
           }
         }
