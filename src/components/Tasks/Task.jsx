@@ -104,9 +104,12 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
 
   return (
     <div key={id} className="tasks__items-row">
-      <button className="btn" onClick={onClick}>
-        ✓
-      </button>
+      {list.id !== 1 && (
+        <button className="btn" onClick={onClick}>
+          ✓
+        </button>
+      )}
+
       <ReactQuill value={finishText} readOnly theme={"bubble"} />
       <div className="tasks__items-row-actions">
         <div onClick={() => onEdit(list.id, { id, text })}>

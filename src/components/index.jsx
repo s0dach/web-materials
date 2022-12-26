@@ -11,7 +11,6 @@ function Lections() {
   const [colors, setColors] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
   let history = useHistory();
-
   useEffect(() => {
     axios
       .get("http://95.163.234.208:3500/lists?_expand=color&_embed=tasks")
@@ -140,6 +139,7 @@ function Lections() {
       }
     });
   }, [lists, history]);
+
   return (
     <div className="lection">
       <div className="lection__sidebar">
@@ -164,7 +164,7 @@ function Lections() {
                   />
                 </svg>
               ),
-              name: "Все разделы",
+              name: "Информация по использованию бота.",
             },
           ]}
         />
@@ -188,30 +188,31 @@ function Lections() {
       </div>
       <div className="lection__tasks">
         <Route exact path="/">
-          {lists &&
-            lists.map((list) => (
-              <Tasks
-                key={list.id}
-                list={list}
-                onAddTask={onAddTask}
-                onEditTitle={onEditListTitle}
-                onRemoveTask={onRemoveTask}
-                onEditTask={onEditTask}
-                onCompleteTask={onCompleteTask}
-                withoutEmpty
-              />
-            ))}
+          {lists && (
+            <Tasks
+              key={lists[0].id}
+              list={lists[0]}
+              onAddTask={onAddTask}
+              onEditTitle={onEditListTitle}
+              onRemoveTask={onRemoveTask}
+              onEditTask={onEditTask}
+              onCompleteTask={onCompleteTask}
+              withoutEmpty
+            />
+          )}
         </Route>
         <Route path="/lists/:id">
           {lists && activeItem && (
             <div>
-              <button
-                disabled={state}
-                className="btn"
-                onClick={() => closeLection(activeItem.id)}
-              >
-                Завершить сесссию для лекции "{activeItem.name}"
-              </button>
+              {activeItem.id !== 1 && (
+                <button
+                  disabled={state}
+                  className="btn"
+                  onClick={() => closeLection(activeItem.id)}
+                >
+                  Завершить сесссию для лекции "{activeItem.name}"
+                </button>
+              )}
               <Tasks
                 list={activeItem}
                 onAddTask={onAddTask}

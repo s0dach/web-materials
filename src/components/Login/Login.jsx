@@ -7,8 +7,6 @@ export const Login = () => {
   const [valuePassword, setValuePassword] = React.useState("");
   const login = (event) => {
     event.preventDefault();
-    console.log("valueLogin", valueLogin);
-    console.log("valuePassword", valuePassword);
     if (valueLogin === "editor" && valuePassword === "editorbot22") {
       setIsAuth(true);
       localStorage.setItem("auth", "true");
