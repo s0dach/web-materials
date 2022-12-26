@@ -35,12 +35,13 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       //     "https://drive.google.com/u/0/uc?id=1oYsYsQ_azQNCdnBj67QJUPbqbxSWdvAX&export=download",
       // });
       const htmlTooMarkdown = htmlToMarkdown(finishText);
-      const boldText1 = htmlTooMarkdown.replace("***", "*");
-      const boldText2 = boldText1.replace("****", "*");
-      const boldText = boldText2.replace("**", "*");
+      // const boldText1 = htmlTooMarkdown.replace("***", "*");
+      // const boldText2 = boldText1.replace("****", "*");
+      // const boldText = boldText2.replace("**", "*");
       // const boldText1 = boldText.replace("\n*", "*");
+      const bold = text.split("**").join("*");
       console.log(htmlTooMarkdown);
-      const firstFinishedTextTest = boldText.split("![](").join("<img src=");
+      const firstFinishedTextTest = bold.split("![](").join("<img src=");
       const lastFinishedTextTest = firstFinishedTextTest
         .split(".png)")
         .join(".png>");
