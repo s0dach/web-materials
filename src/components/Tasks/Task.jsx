@@ -47,7 +47,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       let first_link = "";
       let video_link = "";
-      if (links.indexOf("imgur.com") !== -1) {
+      if (links?.[0].indexOf("imgur.com") !== -1) {
         first_link = links?.[0];
       } else {
         video_link = links?.[0];
