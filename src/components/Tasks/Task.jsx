@@ -51,7 +51,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
       const finishMyText = lastFinishedText.replace(
-        "**Вложения:**",
+        "*Вложения:**",
         "Вложения: "
       );
       data.forEach((ids) => {
