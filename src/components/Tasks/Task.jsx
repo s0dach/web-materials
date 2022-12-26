@@ -40,8 +40,11 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       // const boldText = boldText2.replace("**", "*");
       // const boldText1 = boldText.replace("\n*", "*");
       const bold = text.split("**").join("*");
+      const doc = bold.split("<p><strong>").join("*");
+      const doc2 = doc.split("</strong>").join("*");
+      const doc3 = doc2.split("</p>").join("");
       console.log(htmlTooMarkdown);
-      const firstFinishedTextTest = bold.split("![](").join("<img src=");
+      const firstFinishedTextTest = doc3.split("![](").join("<img src=");
       const lastFinishedTextTest = firstFinishedTextTest
         .split(".png)")
         .join(".png>");
@@ -51,10 +54,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       const lastFinishedText = firstFinishedText.split(".jpg)").join(".jpg>");
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
-      const finishMyText = lastFinishedText.replace(
-        "*Вложения:**",
-        "Вложения: "
-      );
+
       data.forEach((ids) => {
         // const remove = ids.split(",");
         // const userId = remove[0];
@@ -81,7 +81,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
             axios.post(uriDoc, {
               chat_id: Number(ids),
               // parse_mode: "Markdown",
-              caption: finishMyText,
+              caption: lastFinishedText,
               document: `https://drive.google.com/u/0/uc?id=${documentId}&export=download`,
             });
           }
