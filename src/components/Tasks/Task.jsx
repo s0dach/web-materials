@@ -35,7 +35,11 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       //     "https://drive.google.com/u/0/uc?id=1oYsYsQ_azQNCdnBj67QJUPbqbxSWdvAX&export=download",
       // });
       const htmlTooMarkdown = htmlToMarkdown(finishText);
-      const boldText = htmlTooMarkdown.replace("**", "*");
+      const boldText1 = htmlTooMarkdown.replace("***", "*");
+      const boldText2 = boldText1.replace("****", "*");
+      const boldText = boldText2.replace("**", "*");
+      // const boldText1 = boldText.replace("\n*", "*");
+      console.log(htmlTooMarkdown);
       const firstFinishedTextTest = boldText.split("![](").join("<img src=");
       const lastFinishedTextTest = firstFinishedTextTest
         .split(".png)")
@@ -47,7 +51,7 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       const links = lastFinishedText.match(/https:\/\/[^\sZ]+/i);
       const first_link = links?.[0];
       const finishMyText = lastFinishedText.replace(
-        "*Вложения:**",
+        "**Вложения:**",
         "Вложения: "
       );
       data.forEach((ids) => {

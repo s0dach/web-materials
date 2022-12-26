@@ -28,7 +28,7 @@ const AddTaskForm = ({ list, onAddTask }) => {
 
   const modules = React.useMemo(
     () => ({
-      toolbar: [["image"]],
+      toolbar: [["bold", "|"], ["image"]],
       //["bold"],
       clipboard: {
         matchVisual: false,
@@ -60,8 +60,10 @@ const AddTaskForm = ({ list, onAddTask }) => {
   const addTask = async (e) => {
     setIsLoading(true);
     const htmlTooMarkdown = htmlToMarkdown(inputValue);
-    const boldText = htmlTooMarkdown.replace("**", "*");
-    const firstFinishedTextTest = boldText.split("![](").join("<img src=");
+    // const boldText = htmlTooMarkdown.replace("**", "*");
+    const firstFinishedTextTest = htmlTooMarkdown
+      .split("![](")
+      .join("<img src=");
     const lastFinishedTextTest = firstFinishedTextTest
       .split(".png)")
       .join(".png>");
