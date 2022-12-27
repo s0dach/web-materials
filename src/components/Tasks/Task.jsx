@@ -38,7 +38,8 @@ const Task = ({ id, text, documentId, listId, list, onRemove, onEdit }) => {
       const italicText = boldText.split("*").join("@@@");
       const boldTextFinish = italicText.split("!!!").join("*");
       const allBItext = boldTextFinish.split("@@@").join("_");
-      const firstFinishedTextTest = allBItext.split("![](").join("<img src=");
+      const allFixText = allBItext.replace(/\\/g, "");
+      const firstFinishedTextTest = allFixText.split("![](").join("<img src=");
       const lastFinishedTextTest = firstFinishedTextTest
         .split(".png)")
         .join(".png>");
